@@ -37,16 +37,16 @@ export function getMenuList(pathname: string): Group[] {
       groupLabel: "Contents",
       menus: [
         {
-          href: "/leader-board",
+          href: "/leaderboard",
           label: "LeaderBoard",
-          active: pathname === "/leader-board",
+          active: pathname === "/leaderboard",
           icon: SquarePen,
           submenus: [],
         },
         {
-          href: "/new",
-          label: "New",
-          active: pathname === "/new",
+          href: "/add",
+          label: "New Poll",
+          active: pathname === "/add",
           icon: PlusIcon,
           submenus: [],
         },

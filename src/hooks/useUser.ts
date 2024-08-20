@@ -1,5 +1,4 @@
 import { _getUsers } from "@/lib/_DATA";
-import { setLogin } from "@/stores/features/auth/authSlice";
 import { setUsers } from "@/stores/features/users/userSlice";
 import { RootState } from "@/stores/store";
 import { User, UserLogin } from "@/types/entities.type";
@@ -11,11 +10,17 @@ export const useUser = () => {
   const usersList = useSelector((state: RootState) => state.users.users);
 
   useEffect(() => {
-    getUsers();
+    if (!usersList) {
+      getUsers().then((data) => {
+        dispatch(setUsers(data));
+      });
+    }
   }, [dispatch]);
 
   const getUserByName = async (name: string): Promise<User> => {
-    return usersList?.find((item) => item.id === name) as User;
+    return await _getUsers().then((data) => {
+      return Object.values(data!).find((item) => item.id === name) as User;
+    });
   };
 
   const getUsers = async (): Promise<User[]> => {
@@ -28,18 +33,17 @@ export const useUser = () => {
         questions: item.questions,
       }));
     });
-    dispatch(setUsers(users));
     return users;
   };
 
   const login = async (user: UserLogin) => {
     try {
-      const useByName = await getUserByName(user.username);
+      const useByName = await getUserByName(user.username!);
+      console.log(useByName);
       if (!useByName) {
-        return null;
-      } else {
-        dispatch(setLogin(useByName));
-        return useByName.password === user.password;
+        return false;
+      } else if (user.password === useByName.password) {
+        return { ...useByName, password: "" };
       }
     } catch (error) {
       console.error(error);

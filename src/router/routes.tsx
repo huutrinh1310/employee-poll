@@ -16,15 +16,15 @@ export const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "leader-board",
+        path: "leaderboard",
         element: <LeaderBoardPage />,
       },
       {
-        path: "new",
+        path: "add",
         element: <NewPage />,
       },
       {
-        path: "poll/:id",
+        path: "questions/:question_id",
         element: <PollPage />,
       },
     ],

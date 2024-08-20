@@ -3,8 +3,8 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { useQuestion } from "@/hooks/userQuestion";
 import { useUser } from "@/hooks/useUser";
-import { _saveQuestionAnswer } from "@/lib/_DATA";
 import { setCurrentQuestion } from "@/stores/features/question/questionSlice";
 import { RootState } from "@/stores/store";
 import { User } from "@/types/entities.type";
@@ -16,19 +16,20 @@ export default function PollPage() {
   const dispatch = useDispatch();
   const { getUserById } = useUser();
   const navigate = useNavigate();
+  const { saveQuestionAnswer } = useQuestion();
   const user = useSelector((state: RootState) => state.authen.user);
 
   const currentQuestion = useSelector(
     (state: RootState) => state.question.currentQuestion
   );
-  const { id } = useParams();
+  const { question_id } = useParams();
   const [author, setAuthor] = useState<User | null>(null);
 
   useEffect(() => {
-    if (id) {
-      dispatch(setCurrentQuestion(id));
+    if (question_id) {
+      dispatch(setCurrentQuestion(question_id));
     }
-  }, [id, dispatch]);
+  }, [question_id, dispatch]);
 
   useEffect(() => {
     const fetchQuestion = async () =>
@@ -44,7 +45,7 @@ export default function PollPage() {
   }, [currentQuestion, getUserById]);
 
   const handleAnswer = async (type: "optionOne" | "optionTwo") => {
-    await _saveQuestionAnswer({
+    await saveQuestionAnswer({
       authedUser: user?.id as string,
       qid: currentQuestion?.id as string,
       answer: type,

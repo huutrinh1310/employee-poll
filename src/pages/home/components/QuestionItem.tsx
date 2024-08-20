@@ -11,7 +11,7 @@ import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 
 export interface IQuestionItemProps {
-  data: Question;
+  data?: Question;
 }
 
 export default function QuestionItem({ data }: IQuestionItemProps) {
@@ -19,9 +19,9 @@ export default function QuestionItem({ data }: IQuestionItemProps) {
   return (
     <Card className="w-full md:w-[400px] lg:w-[300px]">
       <CardHeader>
-        <CardTitle>{data.author}</CardTitle>
+        <CardTitle>{data?.author}</CardTitle>
         <CardDescription>
-          {dayjs(data.timestamp).format("hh:mm A | DD/MM/YYYY")}
+          {dayjs(data?.timestamp).format("hh:mm A | DD/MM/YYYY")}
         </CardDescription>
       </CardHeader>
       <hr />
@@ -31,7 +31,7 @@ export default function QuestionItem({ data }: IQuestionItemProps) {
           variant={"outline"}
           children={"Show"}
           onClick={() => {
-            navigate("/poll/" + data.id);
+            navigate("/questions/" + data?.id);
           }}
         />
       </CardContent>

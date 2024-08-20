@@ -11,11 +11,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
 import { useUser } from "@/hooks/useUser";
+import { setLogin } from "@/stores/features/auth/authSlice";
 import { RootState } from "@/stores/store";
+import { User } from "@/types/entities.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 
@@ -29,6 +31,7 @@ const formSchema = z.object({
 });
 
 export default function LoginPage() {
+  const dispatch = useDispatch();
   const isAuth = useSelector((state: RootState) => state.authen.isAuth);
   const { login } = useUser();
   const navigate = useNavigate();
@@ -43,20 +46,31 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (isAuth) {
+      toast({
+        variant: "default",
+        title: "Success!",
+        description: "Login successfully!",
+      }).update({
+        id: "login-success",
+        duration: 5000,
+      });
       navigate("/");
     }
   }, [isAuth]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await login(values).then((success) => {
-      if (!success) {
-        toast({
-          variant: "destructive",
-          title: "Uh oh! Login fail!",
-          description: "Username or password is wrong!",
-        });
-      }
-    });
+    const result = await login(values);
+    if (result) {
+      dispatch(setLogin(result as User));
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Username or password is incorrect!",
+      }).update({
+        id: "login-error",
+      });
+    }
   }
 
   return (
@@ -83,6 +97,7 @@ export default function LoginPage() {
                       <FormLabel>Username</FormLabel>
                       <FormControl>
                         <Input
+                          id="username"
                           placeholder="Enter your username"
                           {...field}
                         />
@@ -110,6 +125,7 @@ export default function LoginPage() {
                     <FormItem>
                       <FormControl>
                         <Input
+                          id="password"
                           type="password"
                           placeholder="Enter your password"
                           {...field}

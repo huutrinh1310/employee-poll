@@ -1,4 +1,4 @@
-import { _getQuestions } from "@/lib/_DATA";
+import { _getQuestions, _saveQuestion, _saveQuestionAnswer } from "@/lib/_DATA";
 import {
   setDoneQuestion,
   setNewQuestion,
@@ -52,5 +52,23 @@ export const useQuestion = () => {
     );
   };
 
-  return { fetchQuestion, getQuestionById };
+  const saveQuestionAnswer = async (data: {
+    authedUser: string;
+    qid: string;
+    answer: "optionOne" | "optionTwo";
+  }) => {
+    return await _saveQuestionAnswer({ ...data });
+  };
+
+  const saveQuestion = async (question: {
+    id: string;
+    author: string;
+    timestamp: number;
+    optionOneText: string;
+    optionTwoText: string;
+  }) => {
+    return await _saveQuestion({ ...question });
+  };
+
+  return { fetchQuestion, getQuestionById, saveQuestionAnswer, saveQuestion };
 };
