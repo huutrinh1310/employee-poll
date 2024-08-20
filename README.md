@@ -5,10 +5,10 @@ This is the starter code for the final assessment project for Udacity's React & 
 # Getting Started
 
 ## Prerequisites
-`
-  yarn     // to install all dependencies
+```
+  yarn     // to install all dependencies\n
   yarn dev // to run project
-`
+```
 ## Data
 
 There are two types of objects stored in our database:
