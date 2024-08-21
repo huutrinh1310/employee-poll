@@ -11,6 +11,12 @@ This is the starter code for the final assessment project for Udacity's React & 
 ```
 ## Data
 
+## Testing
+## Prerequisites
+```
+  yarn     // to install all dependencies\n
+  yarn test // to run test the already unit test
+```
 There are two types of objects stored in our database:
 
 - Users
