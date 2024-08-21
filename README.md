@@ -1,5 +1,5 @@
 # Employee Polls
-
+This project is about the manage employee poll, includes functions like authentication, login, list users, and create new poll.
 This is the starter code for the final assessment project for Udacity's React & Redux course.
 
 # Getting Started

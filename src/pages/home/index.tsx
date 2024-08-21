@@ -1,21 +1,21 @@
 import { ContentLayout } from "@/components/layout/ContentLayout";
 import { Label } from "@/components/ui/label";
+import { useQuestion } from "@/hooks/useQuestion";
 import { Question } from "@/types/entities.type";
 import QuestionList from "./components/QuestionList";
-import { useQuestion } from "@/hooks/userQuestion";
-import { useSelector } from "react-redux";
-import { RootState } from "@/stores/store";
-import { useEffect } from "react";
 
 export default function HomePage() {
-  const { fetchQuestion } = useQuestion();
-  const { newQuestion, doneQuestion } = useSelector(
-    (state: RootState) => state.question
+  const { questions } = useQuestion();
+  const newQuestion = questions?.filter(
+    (item: Question) =>
+      !item.optionOne.votes.includes(item.author) &&
+      !item.optionTwo.votes.includes(item.author)
   );
-
-  useEffect(() => {
-    fetchQuestion();
-  }, []);
+  const doneQuestion = questions?.filter(
+    (item: Question) =>
+      item.optionOne.votes.includes(item.author) ||
+      item.optionTwo.votes.includes(item.author)
+  );
 
   return (
     <ContentLayout title="Home">

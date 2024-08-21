@@ -1,10 +1,11 @@
 import RootLayout from "@/components/layout/RootLayout";
+import NotFoundPage from "@/components/not-found-page";
 import HomePage from "@/pages/home";
 import LeaderBoardPage from "@/pages/leaderboard";
 import LoginPage from "@/pages/login";
 import NewPage from "@/pages/new";
 import PollPage from "@/pages/poll";
-import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
+import { createBrowserRouter, Outlet } from "react-router-dom";
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +46,6 @@ export const router = createBrowserRouter([
   },
   {
     path: "/*",
-    element: <Navigate to={"/auth/login"} />,
+    element: <NotFoundPage />,
   },
 ]);

@@ -3,45 +3,36 @@ import { Question } from "@/types/entities.type";
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface QuestionType {
-  newQuestion: Question[] | null;
-  doneQuestion: Question[] | null;
-  currentQuestion: Question | null;
+  questions: Question[];
+  currentQuestion?: Question;
 }
 
 const initialState: QuestionType = {
-  newQuestion: null,
-  doneQuestion: null,
-  currentQuestion: null,
+  questions: [],
+  currentQuestion: undefined,
 };
 
 export const questionSlice = createSlice({
   name: "question",
   initialState,
   reducers: {
-    setNewQuestion: (state, payload: { payload: Question[]; type: string }) => {
-      state.newQuestion = payload.payload;
+    setQuestions: (state, payload: { payload: Question[]; type: string }) => {
+      state.questions = payload.payload;
     },
-    setDoneQuestion: (
+    setCurrentQuestion: (
       state,
-      payload: { payload: Question[]; type: string }
+      payload: { payload: Question; type: string }
     ) => {
-      state.doneQuestion = payload.payload;
-    },
-    setCurrentQuestion: (state, payload: { payload: string; type: string }) => {
-      const allQuestion = [...state.newQuestion!, ...state.doneQuestion!];
-      state.currentQuestion = allQuestion.find(
-        (item) => item.id === payload.payload
-      )!;
+      state.currentQuestion = payload.payload;
     },
   },
 });
 
-export const { setCurrentQuestion, setNewQuestion, setDoneQuestion } =
-  questionSlice.actions;
+export const {
+  setCurrentQuestion,
+  setQuestions,
+} = questionSlice.actions;
 
-export const getNewQuestion = (state: RootState) => state.question.newQuestion;
-export const getDoneQuestion = (state: RootState) =>
-  state.question.doneQuestion;
 export const getCurrentQuestion = (state: RootState) =>
   state.question.currentQuestion;
 

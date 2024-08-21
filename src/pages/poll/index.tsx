@@ -3,20 +3,18 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { useQuestion } from "@/hooks/userQuestion";
+import { useQuestion } from "@/hooks/useQuestion";
 import { useUser } from "@/hooks/useUser";
-import { setCurrentQuestion } from "@/stores/features/question/questionSlice";
 import { RootState } from "@/stores/store";
 import { User } from "@/types/entities.type";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function PollPage() {
-  const dispatch = useDispatch();
   const { getUserById } = useUser();
   const navigate = useNavigate();
-  const { saveQuestionAnswer } = useQuestion();
+  const { saveQuestionAnswer, setCurrentQuestionService } = useQuestion();
   const user = useSelector((state: RootState) => state.authen.user);
 
   const currentQuestion = useSelector(
@@ -27,22 +25,17 @@ export default function PollPage() {
 
   useEffect(() => {
     if (question_id) {
-      dispatch(setCurrentQuestion(question_id));
+      setCurrentQuestionService(question_id).then((data) => {
+        if (data) {
+          getUserById(data.author).then((author) => {
+            setAuthor(author);
+          });
+        } else {
+          navigate("/not-found");
+        }
+      });
     }
-  }, [question_id, dispatch]);
-
-  useEffect(() => {
-    const fetchQuestion = async () =>
-      getUserById(currentQuestion?.author as string).then((data) =>
-        setAuthor(data)
-      );
-
-    fetchQuestion();
-
-    return () => {
-      setAuthor(null);
-    };
-  }, [currentQuestion, getUserById]);
+  }, [question_id]);
 
   const handleAnswer = async (type: "optionOne" | "optionTwo") => {
     await saveQuestionAnswer({

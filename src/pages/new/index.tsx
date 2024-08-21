@@ -6,7 +6,7 @@ import { z } from "zod";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/hooks/useUser";
-import { useQuestion } from "@/hooks/userQuestion";
+import { useQuestion } from "@/hooks/useQuestion";
 import { RootState } from "@/stores/store";
 
 export default function NewPage() {
