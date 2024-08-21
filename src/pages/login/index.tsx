@@ -7,8 +7,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
 import { useUser } from "@/hooks/useUser";
 import { setLogin } from "@/stores/features/auth/authSlice";
@@ -25,22 +31,18 @@ const formSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
-  }),
 });
 
 export default function LoginPage() {
   const dispatch = useDispatch();
   const isAuth = useSelector((state: RootState) => state.authen.isAuth);
-  const { login } = useUser();
+  const { login, usersList } = useUser();
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
-      password: "",
     },
   });
 
@@ -95,13 +97,26 @@ export default function LoginPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Username</FormLabel>
-                      <FormControl>
-                        <Input
-                          id="username"
-                          placeholder="Enter your username"
-                          {...field}
-                        />
-                      </FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a verified email to display" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {usersList?.map((item) => (
+                            <SelectItem
+                              key={item.id}
+                              value={item.id}
+                            >
+                              {item.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -109,7 +124,7 @@ export default function LoginPage() {
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password"></Label>
                   <Link
                     to="/forgot-password"
                     className="ml-auto inline-block text-sm underline"
@@ -117,24 +132,6 @@ export default function LoginPage() {
                     Forgot your password?
                   </Link>
                 </div>
-
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          id="password"
-                          type="password"
-                          placeholder="Enter your password"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
               </div>
               <Button
                 type="submit"

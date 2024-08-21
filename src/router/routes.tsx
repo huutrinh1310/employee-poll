@@ -5,7 +5,7 @@ import LeaderBoardPage from "@/pages/leaderboard";
 import LoginPage from "@/pages/login";
 import NewPage from "@/pages/new";
 import PollPage from "@/pages/poll";
-import { createBrowserRouter, Outlet } from "react-router-dom";
+import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +28,10 @@ export const router = createBrowserRouter([
         path: "questions/:question_id",
         element: <PollPage />,
       },
+      {
+        path: "/*",
+        element: <Navigate to={"/not-found"} />,
+      },
     ],
   },
   {
@@ -45,7 +49,11 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/*",
+    path: "/not-found",
     element: <NotFoundPage />,
+  },
+  {
+    path: "/*",
+    element: <LoginPage />,
   },
 ]);

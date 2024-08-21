@@ -3,6 +3,7 @@ import {
   setCurrentQuestion,
   setQuestions,
 } from "@/stores/features/question/questionSlice";
+import { setUsers } from "@/stores/features/users/userSlice";
 import { RootState } from "@/stores/store";
 import { Question } from "@/types/entities.type";
 import { useEffect } from "react";
@@ -13,6 +14,7 @@ export const useQuestion = () => {
   const { currentQuestion, questions } = useSelector(
     (state: RootState) => state.question
   );
+  const usersList = useSelector((state: RootState) => state.users.users);
 
   useEffect(() => {
     getAllQuestions().then((data) => dispatch(setQuestions(data)));
@@ -35,6 +37,27 @@ export const useQuestion = () => {
     qid: string;
     answer: "optionOne" | "optionTwo";
   }) => {
+    const user = usersList?.find((item) => item.id === data.authedUser);
+
+    if (!user) {
+      return false;
+    }
+
+    const updatedUser = {
+      ...user,
+      answers: {
+        ...user.answers,
+        [data.qid]: data.answer,
+      },
+    };
+
+    dispatch(
+      setUsers([
+        ...usersList!.filter((item) => item.id !== data.authedUser),
+        updatedUser,
+      ])
+    );
+
     return await _saveQuestionAnswer({ ...data });
   };
 

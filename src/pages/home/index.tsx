@@ -3,18 +3,24 @@ import { Label } from "@/components/ui/label";
 import { useQuestion } from "@/hooks/useQuestion";
 import { Question } from "@/types/entities.type";
 import QuestionList from "./components/QuestionList";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
 
 export default function HomePage() {
   const { questions } = useQuestion();
+  const user = useSelector((state: RootState) => state.authen.user);
   const newQuestion = questions?.filter(
     (item: Question) =>
-      !item.optionOne.votes.includes(item.author) &&
-      !item.optionTwo.votes.includes(item.author)
+      user &&
+      !item.optionOne.votes.includes(user.id) &&
+      user &&
+      !item.optionTwo.votes.includes(user.id)
   );
+
   const doneQuestion = questions?.filter(
     (item: Question) =>
-      item.optionOne.votes.includes(item.author) ||
-      item.optionTwo.votes.includes(item.author)
+      (user && item.optionOne.votes.includes(user.id)) ||
+      (user && item.optionTwo.votes.includes(user.id))
   );
 
   return (

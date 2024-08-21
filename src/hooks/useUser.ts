@@ -10,7 +10,7 @@ export const useUser = () => {
   const usersList = useSelector((state: RootState) => state.users.users);
 
   useEffect(() => {
-    if (!usersList) {
+    if (usersList?.length === 0 || !usersList) {
       getUsers().then((data) => {
         dispatch(setUsers(data));
       });
@@ -39,12 +39,11 @@ export const useUser = () => {
   const login = async (user: UserLogin) => {
     try {
       const useByName = await getUserByName(user.username!);
-      console.log(useByName);
+
       if (!useByName) {
         return false;
-      } else if (user.password === useByName.password) {
-        return { ...useByName, password: "" };
       }
+      return { ...useByName, password: "" };
     } catch (error) {
       console.error(error);
     }
