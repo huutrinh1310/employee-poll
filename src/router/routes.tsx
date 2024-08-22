@@ -1,5 +1,6 @@
 import RootLayout from "@/components/layout/RootLayout";
 import NotFoundPage from "@/components/not-found-page";
+import Protected from "@/components/protected-router";
 import HomePage from "@/pages/home";
 import LeaderBoardPage from "@/pages/leaderboard";
 import LoginPage from "@/pages/login";
@@ -10,7 +11,11 @@ import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />,
+    element: (
+      <Protected>
+        <RootLayout />
+      </Protected>
+    ),
     children: [
       {
         index: true,

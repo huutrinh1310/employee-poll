@@ -24,7 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -38,6 +38,7 @@ export default function LoginPage() {
   const isAuth = useSelector((state: RootState) => state.authen.isAuth);
   const { login, usersList } = useUser();
   const navigate = useNavigate();
+  const { state } = useLocation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -56,7 +57,7 @@ export default function LoginPage() {
         id: "login-success",
         duration: 5000,
       });
-      navigate("/");
+      navigate(state?.path || "/");
     }
   }, [isAuth]);
 

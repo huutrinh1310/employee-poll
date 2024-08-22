@@ -1,22 +1,12 @@
 import { cn } from "@/lib/utils";
-import { Sidebar } from "./Sidebar";
-import { Footer } from "./Footer";
-import { useSelector } from "react-redux";
 import { selectSidebarIsOpen } from "@/stores/features/sidebar/slice";
-import { Outlet, useNavigate } from "react-router-dom";
-import { RootState } from "@/stores/store";
-import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Outlet } from "react-router-dom";
+import { Footer } from "./Footer";
+import { Sidebar } from "./Sidebar";
 
 export default function RootLayout() {
-  const navigate = useNavigate();
   const isOpen = useSelector(selectSidebarIsOpen);
-  const isAuth = useSelector((state: RootState) => state.authen.isAuth);
-
-  useEffect(() => {
-    if (!isAuth) {
-      navigate("/auth/login");
-    }
-  }, [isAuth]);
 
   return (
     <>
