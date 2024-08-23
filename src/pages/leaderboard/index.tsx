@@ -11,11 +11,18 @@ export default function LeaderBoardPage() {
   useEffect(() => {
     if (usersList) {
       setUsers(
-        usersList.map((item) => ({
-          user: item,
-          answerNumber: Object.keys(item.answers).length,
-          createdNumber: item.questions.length,
-        }))
+        usersList
+          .map((item) => ({
+            user: item,
+            answerNumber: Object.keys(item.answers).length,
+            createdNumber: item.questions.length,
+          }))
+          .sort(
+            (a, b) =>
+              b.answerNumber +
+              b.createdNumber -
+              (a.answerNumber + a.createdNumber)
+          )
       );
     }
 

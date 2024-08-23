@@ -178,9 +178,9 @@ function formatQuestion({
 }
 
 export function _saveQuestion(question: {
-  id: string;
+  id?: string;
   author: string;
-  timestamp: number;
+  timestamp?: number;
   optionOneText: string;
   optionTwoText: string;
 }): Promise<Question> {

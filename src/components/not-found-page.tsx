@@ -1,12 +1,23 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
+import { useEffect } from "react";
+import { setLogout } from "@/stores/features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 export default function NotFoundPage() {
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const dispatch = useDispatch();
 
   const handleGoHome = () => {
     navigate("/");
   };
+
+  useEffect(() => {
+    if (state?.path === "/not-found") {
+      dispatch(setLogout());
+    }
+  }, [state]);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen text-center bg-gray-50 p-6">

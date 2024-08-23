@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`saveQuestion should match the snapshot for users 1`] = `"Sarah Edo"`;

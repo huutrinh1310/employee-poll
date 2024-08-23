@@ -55,7 +55,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "/not-found",
-    element: <NotFoundPage />,
+    element: (
+      <Protected>
+        <NotFoundPage />
+      </Protected>
+    ),
   },
   {
     path: "/*",

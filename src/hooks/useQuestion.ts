@@ -17,8 +17,13 @@ export const useQuestion = () => {
   const usersList = useSelector((state: RootState) => state.users.users);
 
   useEffect(() => {
-    getAllQuestions().then((data) => dispatch(setQuestions(data)));
+    const fetchAllQuestion = async () => {
+      await getAllQuestions().then((data) => {
+        dispatch(setQuestions(data));
+      });
+    };
 
+    fetchAllQuestion();
     return () => {};
   }, [dispatch]);
 
