@@ -33,9 +33,9 @@ jobs:
 
     - name: Deploy with gh-pages
       run: |
-        git config user.name huutrinh1310
+        git config user.name huu trinh
         git config user.email huutrinh1310@gmail.com
-        git remote set-url origin https://huutrinh1310:${{ secrets.YOUR_PAT_SECRET }}@github.com/huutrinh1310/employee-poll.git
+        git remote set-url origin https://huutrinh1310:${{ secrets.YOUR_PAT_SECRET }}@github.com/huutrinh1310/vite-project.git
         npm run deploy -- -u "github-actions-bot <support+actions@github.com>"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
