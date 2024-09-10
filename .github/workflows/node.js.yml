@@ -21,7 +21,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Set up git Use Node.js ${{ matrix.node-version }}
+
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
@@ -32,6 +33,8 @@ jobs:
 
     - name: Deploy with gh-pages
       run: |
+        git config user.name huutrinh1310
+        git config user.email huutrinh1310@gmail.com
         git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
         npm run deploy -- -u "github-actions-bot <support+actions@github.com>"
       env:
